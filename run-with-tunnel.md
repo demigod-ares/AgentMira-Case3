@@ -49,7 +49,7 @@ The Vite config includes a proxy that forwards `/api` requests to `localhost:500
 **Option A: Quick Tunnel (No account required)**
 
 ```powershell
-cloudflared tunnel --url http://localhost:5173 --config C:\Users\profe\.cloudflared\config.yml
+cloudflared tunnel --url http://localhost:5173 --config C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml
 ```
 
 This will generate a temporary URL like: `https://random-words-here.trycloudflare.com`
@@ -94,7 +94,7 @@ curl https://your-tunnel-url.trycloudflare.com/api/health
 ## Troubleshooting
 
 ### CORS Errors
-- Ensure the Cloudflare config file exists at: `C:\Users\profe\.cloudflared\config.yml`
+- Ensure the Cloudflare config file exists at: `C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml`
 - Verify the ingress rules have `/api/*` before the frontend catch-all
 - Check that both frontend and backend servers are running
 
@@ -126,7 +126,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd 'C:\Codes\9AIP
 
 # Start Cloudflare tunnel (wait a few seconds for servers to start)
 Start-Sleep -Seconds 5
-cloudflared tunnel --url http://localhost:5173 --config C:\Users\profe\.cloudflared\config.yml
+cloudflared tunnel --url http://localhost:5173 --config C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml
 ```
 
 ## Stopping Everything
@@ -145,7 +145,7 @@ Press `Ctrl+C` in each terminal window to stop the respective service:
 2. **Vite proxy config** (`frontend/vite.config.js`)
    - Added proxy to forward `/api` → `http://localhost:5000`
 
-3. **Cloudflare Tunnel config** (`C:\Users\profe\.cloudflared\config.yml`)
+3. **Cloudflare Tunnel config** (`C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml`)
    - Path-based routing: `/api/*` → backend, everything else → frontend
 
 4. **Backend CORS** (`backend/server.js`)

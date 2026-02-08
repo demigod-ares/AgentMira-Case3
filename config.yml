@@ -1,0 +1,19 @@
+# Cloudflare Tunnel Configuration
+# This config sets up path-based routing for frontend and backend
+
+# Note: Replace the tunnel ID and credentials file if you have a named tunnel
+# For quick tunnels (cloudflared tunnel --url), you don't need tunnel/credentials-file
+
+ingress:
+  # Route API requests to backend (localhost:5000)
+  # All requests to /api/* will be proxied to the backend
+  - path: /api/*
+    service: http://localhost:5000
+  
+  # Route root and all other requests to frontend (localhost:5137)
+  # This should be the last specific rule before the catch-all
+  - service: http://localhost:5173
+  
+  # Catch-all rule (required by Cloudflare)
+  # Returns 404 for any unmatched requests
+  # - service: http_status:404

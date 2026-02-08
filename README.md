@@ -59,7 +59,7 @@ cd frontend
 npm run dev
 
 # 3. Start tunnel (terminal 3)
-cloudflared tunnel --url http://localhost:5173 --config C:\Users\profe\.cloudflared\config.yml
+cloudflared tunnel --url http://localhost:5173 --config C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml
 ```
 
 The tunnel will provide a public URL (e.g., `https://random-words.trycloudflare.com`) that:

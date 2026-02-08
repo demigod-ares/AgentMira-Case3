@@ -1,7 +1,7 @@
 # CORS Fix Summary - Cloudflare Tunnel Path-Based Routing
 
 ## Problem
-The frontend running on Cloudflare Tunnel (proxying localhost:5137) couldn't access the backend on localhost:5000 due to CORS restrictions. The browser blocked direct local backend access from the public tunnel URL.
+The frontend running on Cloudflare Tunnel (proxying localhost:5173) couldn't access the backend on localhost:5000 due to CORS restrictions. The browser blocked direct local backend access from the public tunnel URL.
 
 ## Solution Implemented
 Configured **path-based routing** using Cloudflare Tunnel to proxy both frontend and backend through a single domain, eliminating cross-origin issues.
@@ -11,19 +11,19 @@ Configured **path-based routing** using Cloudflare Tunnel to proxy both frontend
 ## Changes Made
 
 ### 1. **Cloudflare Tunnel Configuration**
-**File:** `C:\Users\profe\.cloudflared\config.yml`
+**File:** `C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml`
 
 Created ingress rules for path-based routing:
 ```yaml
 ingress:
   - path: /api/*
     service: http://localhost:5000
-  - service: http://localhost:5137
+  - service: http://localhost:5173
 ```
 
 **How it works:**
 - All requests to `/api/*` → routed to backend (localhost:5000)
-- All other requests → routed to frontend (localhost:5137)
+- All other requests → routed to frontend (localhost:5173)
 - Both services accessible through single tunnel URL (same origin, no CORS)
 
 ---
@@ -67,29 +67,13 @@ server: {
 ```
 
 **Why:** Ensures `/api` requests work in both environments:
-- **Local development** (localhost:5137): Vite proxy forwards to localhost:5000
+- **Local development** (localhost:5173): Vite proxy forwards to localhost:5000
 - **Cloudflare Tunnel**: Ingress rules forward to localhost:5000
 - **Same API path works everywhere** (no environment-specific code)
 
 ---
 
-### 4. **Helper Scripts Created**
-
-#### **start-tunnel.bat**
-Batch script to easily start Cloudflare Tunnel with proper configuration
-```batch
-cloudflared tunnel --url http://localhost:5137 --config "%USERPROFILE%\.cloudflared\config.yml"
-```
-
-#### **start-all.ps1**
-PowerShell script to launch all services at once:
-1. Backend server (in new terminal)
-2. Frontend server (in new terminal)
-3. Cloudflare Tunnel (in current terminal)
-
----
-
-### 5. **Documentation**
+### 4. **Documentation**
 
 #### **Workflow Guide:** `.agent/workflows/run-with-tunnel.md`
 Comprehensive guide including:
@@ -138,7 +122,7 @@ Added deployment section explaining:
 
 2. **Browser sends to:**
    ```
-   http://localhost:5137/api/properties/recommend
+   http://localhost:5173/api/properties/recommend
    ```
 
 3. **Vite dev server receives request, checks proxy config:**
@@ -150,34 +134,12 @@ Added deployment section explaining:
 
 ---
 
-## Running the Application
-
-### Option 1: All at Once (Recommended)
-```powershell
-.\start-all.ps1
-```
-
-### Option 2: Manual (3 separate terminals)
-```powershell
-# Terminal 1 - Backend
-cd backend
-npm run start
-
-# Terminal 2 - Frontend
-cd frontend
-npm run dev
-
-# Terminal 3 - Tunnel
-.\start-tunnel.bat
-```
-
----
 
 ## Testing the Fix
 
 ### 1. **Verify Local Setup**
 ```powershell
-# Open http://localhost:5137 in browser
+# Open http://localhost:5173 in browser
 # All features should work (Vite proxy in action)
 ```
 
@@ -213,28 +175,11 @@ curl https://your-tunnel.trycloudflare.com/api/health
 
 | File | Change | Purpose |
 |------|--------|---------|
-| `C:\Users\profe\.cloudflared\config.yml` | Created | Cloudflare ingress rules |
+| `C:\Codes\9AIPython\companies\AgentMira\CaseStudy3\config.yml` | Created | Cloudflare ingress rules |
 | `frontend/src/App.jsx` | Modified line 7 | Use relative API paths |
 | `frontend/vite.config.js` | Added proxy | Local dev API forwarding |
-| `start-tunnel.bat` | Created | Easy tunnel startup |
-| `start-all.ps1` | Created | Launch all services |
 | `.agent/workflows/run-with-tunnel.md` | Created | Detailed documentation |
 | `README.md` | Added section | Deployment instructions |
 
 ---
 
-## Next Steps
-
-Your servers are already running! To start the tunnel:
-
-```powershell
-.\start-tunnel.bat
-```
-
-Or use the all-in-one script next time:
-
-```powershell
-.\start-all.ps1
-```
-
-The tunnel will output a public URL - use that to access your app from anywhere! 🚀

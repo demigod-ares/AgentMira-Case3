@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: [
-      'parking-products-proud-tear.trycloudflare.com'
+      'defendant-processed-search-settlement.trycloudflare.com'
     ],
     // Proxy API requests to backend during local development
     proxy: {

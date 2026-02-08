@@ -5,7 +5,7 @@ import PropertyCard from './components/PropertyCard'
 import PropertyComparison from './components/PropertyComparison'
 
 // Use relative path for API calls - works with Cloudflare Tunnel routing
-// In development (localhost:5137), this proxies to localhost:5000 via Vite config
+// In development (localhost:5173), this proxies to localhost:5000 via Vite config
 // In production (Cloudflare Tunnel), this routes through /api/* ingress rule
 const API_BASE = '/api'
 
