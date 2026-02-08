@@ -7,7 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['https://parking-products-proud-tear.trycloudflare.com', 'http://localhost:5137']
+}));
 app.use(express.json());
 
 // MongoDB Connection

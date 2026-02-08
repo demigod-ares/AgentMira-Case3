@@ -164,7 +164,7 @@ a:hover {
 .main-content {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(350px, 420px) 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-xl);
   padding: var(--space-xl);
   max-width: 1800px;
@@ -794,88 +794,20 @@ a:hover {
 }
 
 /* ========================================
-   Responsive - Ultra Wide (1920px+)
+   Responsive - Desktop (1024px+)
    ======================================== */
 
-@media (min-width: 1920px) {
+@media (min-width: 1024px) {
   .main-content {
-    grid-template-columns: 480px 1fr;
-    gap: var(--space-2xl);
-    padding: var(--space-2xl);
-  }
-
-  .properties-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .chatbot-panel {
-    height: calc(100vh - 160px);
-  }
-
-  .property-image {
-    height: 240px;
+    grid-template-columns: 1fr 1fr;
   }
 
   .form-grid {
     grid-template-columns: 1fr 1fr 1fr auto;
   }
-}
-
-/* ========================================
-   Responsive - Large Desktop (1440px - 1919px)
-   ======================================== */
-
-@media (min-width: 1440px) and (max-width: 1919px) {
-  .main-content {
-    grid-template-columns: 420px 1fr;
-  }
-
-  .properties-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ========================================
-   Responsive - Standard Desktop (1200px - 1439px)
-   ======================================== */
-
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .main-content {
-    grid-template-columns: 380px 1fr;
-    gap: var(--space-lg);
-  }
-
-  .properties-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ========================================
-   Responsive - Small Desktop (1024px - 1199px)
-   ======================================== */
-
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .main-content {
-    grid-template-columns: 380px 1fr;
-    gap: var(--space-lg);
-    padding: var(--space-lg);
-  }
-
-  .properties-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-
-  .chatbot-panel {
-    height: calc(100vh - 130px);
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-sm);
-  }
 
   .form-grid .btn {
-    grid-column: span 2;
+    min-width: max-content;
   }
 }
 

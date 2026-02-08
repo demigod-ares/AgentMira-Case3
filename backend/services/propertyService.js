@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Load JSON data files
-const resourcesPath = path.join(__dirname, '../../resources');
+const resourcesPath = path.join(__dirname, '../resources');
 
 function loadJsonFile(filename) {
     try {

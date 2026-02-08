@@ -27,15 +27,7 @@ A full-stack property recommendation system that helps users find their dream ho
 cd CaseStudy3
 ```
 
-2. **Start the ML service** (Python microservice for price prediction)
-```bash
-cd ml-service
-pip install -r requirements.txt
-python app.py
-```
-ML service runs on http://localhost:5001
-
-3. **Start the backend** (new terminal)
+2. **Start the backend** (new terminal)
 ```bash
 net start MongoDB
 cd backend
@@ -44,13 +36,39 @@ npm start
 ```
 Server runs on http://localhost:5000
 
-4. **Start the frontend** (new terminal)
+3. **Start the frontend** (new terminal)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 App runs on http://localhost:5173
+
+### 🌐 Deploy with Cloudflare Tunnel (Optional)
+
+Expose your app publicly using Cloudflare Tunnel with path-based routing (no CORS issues):
+
+**Manual Start:**
+```powershell
+# 1. Start backend (terminal 1)
+cd backend
+npm run start
+
+# 2. Start frontend (terminal 2)
+cd frontend
+npm run dev
+
+# 3. Start tunnel (terminal 3)
+cloudflared tunnel --url http://localhost:5173 --config C:\Users\profe\.cloudflared\config.yml
+```
+
+The tunnel will provide a public URL (e.g., `https://random-words.trycloudflare.com`) that:
+- Routes `/` to frontend (localhost:5173)
+- Routes `/api/*` to backend (localhost:5000)
+- Eliminates CORS issues through path-based routing
+
+📖 **See `.agent/workflows/run-with-tunnel.md` for detailed setup and troubleshooting**
+
 
 ## 📐 Recommendation Algorithm
 

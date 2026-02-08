@@ -48,7 +48,7 @@ router.post('/recommend', async (req, res) => { // AI model
         const filteredProperties = filterProperties(properties, preferences);
 
         // Get top 3 recommendations with scoring (AI model or Mathamatical model)
-        const recommendations = await getRecommendations(
+        const recommendations = getRecommendations(
             filteredProperties.length > 0 ? filteredProperties : properties,
             preferences
         );

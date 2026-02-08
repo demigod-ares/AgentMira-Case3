@@ -4,7 +4,10 @@ import ChatBot from './components/ChatBot'
 import PropertyCard from './components/PropertyCard'
 import PropertyComparison from './components/PropertyComparison'
 
-const API_BASE = 'http://localhost:5000/api'
+// Use relative path for API calls - works with Cloudflare Tunnel routing
+// In development (localhost:5137), this proxies to localhost:5000 via Vite config
+// In production (Cloudflare Tunnel), this routes through /api/* ingress rule
+const API_BASE = '/api'
 
 function App() {
   const [recommendations, setRecommendations] = useState([])

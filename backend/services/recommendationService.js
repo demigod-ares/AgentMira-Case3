@@ -1,45 +1,5 @@
 const CURRENT_YEAR = new Date().getFullYear();
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:5001';
 
-/**
- * Predict property price using Python ML microservice
- * Falls back to mock prediction if service is unavailable
- */
-async function predictPrice(property) {
-    try {
-        const response = await fetch(`${ML_SERVICE_URL}/predict`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                bedrooms: property.bedrooms,
-                bathrooms: property.bathrooms,
-                size_sqft: property.size_sqft,
-                location: property.location,
-                year_built: property.year_built,
-                amenities: property.amenities || []
-            }),
-            // Add timeout to prevent hanging
-            signal: AbortSignal.timeout(3000)
-        });
-
-        if (!response.ok) {
-            throw new Error(`ML Service responded with ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.predicted_price;
-
-    } catch (error) {
-        console.warn('ML Service unavailable, using fallback prediction:', error.message);
-        return mockPredictPrice(property);
-    }
-}
-
-/**
- * Fallback mock prediction when ML service is unavailable
- */
 function mockPredictPrice(property) {
     const basePrice = property.price;
 
@@ -92,9 +52,9 @@ function getAgeFactor(yearBuilt) {
 /**
  * Calculate recommendation score based on the specified algorithm
  */
-async function calculateScore(property, preferences) {
+function calculateScore(property, preferences) {
     const { budget, minBedrooms } = preferences;
-    const predictedPrice = await predictPrice(property);
+    const predictedPrice = mockPredictPrice(property);
 
     // 1. Price Match Score (30%)
     let priceMatchScore;
@@ -210,22 +170,19 @@ function generateReasoning(property, scoreData, preferences) {
 /**
  * Get top 3 recommended properties based on user preferences
  */
-async function getRecommendations(properties, preferences) {
-    // Score all properties (using Promise.all for parallel processing)
-    const scoredProperties = await Promise.all(
-        properties.map(async (property) => {
-            const scoreData = await calculateScore(property, preferences);
-            const reasoning = generateReasoning(property, scoreData, preferences);
+function getRecommendations(properties, preferences) {
+    const scoredProperties = properties.map((property) => {
+        const scoreData = calculateScore(property, preferences);
+        const reasoning = generateReasoning(property, scoreData, preferences);
 
-            return {
-                ...property,
-                matchScore: scoreData.totalScore,
-                predictedPrice: scoreData.predictedPrice,
-                scoreBreakdown: scoreData.breakdown,
-                reasoning
-            };
-        })
-    );
+        return {
+            ...property,
+            matchScore: scoreData.totalScore,
+            predictedPrice: scoreData.predictedPrice,
+            scoreBreakdown: scoreData.breakdown,
+            reasoning
+        };
+    });
 
     // Sort by total score (descending) and return top 3
     scoredProperties.sort((a, b) => b.matchScore - a.matchScore);
@@ -234,7 +191,6 @@ async function getRecommendations(properties, preferences) {
 }
 
 module.exports = {
-    predictPrice,
     calculateScore,
     generateReasoning,
     getRecommendations
